@@ -1,6 +1,14 @@
+export {};
 const express = require('express');
+const connectDB = require('./config/db');
 
 const app = express();
+
+//Connect DB
+connectDB();
+
+// initialize Middleware
+app.use(express.json({ extended: false }));
 
 app.get('/', (req: any, res: any) => res.send('API runnning '));
 

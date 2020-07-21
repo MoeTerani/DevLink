@@ -35,6 +35,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose = require('mongoose');
 var config = require('config');
 var db = config.get('mongoURI');
@@ -44,7 +45,11 @@ var connectDB = function () { return __awaiter(void 0, void 0, void 0, function 
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, mongoose.connect(db)];
+                return [4 /*yield*/, mongoose.connect(db, {
+                        useUnifiedTopology: true,
+                        useNewUrlParser: true,
+                        useCreateIndex: true,
+                    })];
             case 1:
                 _a.sent();
                 console.log('DB Connected...');
