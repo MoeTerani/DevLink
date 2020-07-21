@@ -49,6 +49,7 @@ var connectDB = function () { return __awaiter(void 0, void 0, void 0, function 
                         useUnifiedTopology: true,
                         useNewUrlParser: true,
                         useCreateIndex: true,
+                        useFindAndModify: false,
                     })];
             case 1:
                 _a.sent();
