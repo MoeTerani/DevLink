@@ -14,7 +14,7 @@ router.get('/me', Auth, async (req: express.Request, res: express.Response) => {
     const profile = await Profile.findOne({
       //@ts-ignore-start
       user: req.user.id,
-    }).populate('User', ['name', 'avatar']); // user here is the user with the linked type ObjectId in the model - so we findOne with the user object field in the model.
+    }).populate('user', ['name', 'avatar']); // user here is the user with the linked type ObjectId in the model - so we findOne with the user object field in the model.
     //@ts-ignore-end
     if (!profile) {
       return res
@@ -110,5 +110,50 @@ router.post(
     }
   }
 );
+
+// @route   GET api/profile
+// @desc    GET all user profiles
+// @access  Public
+
+router.get('/', async (req: express.Request, res: express.Response) => {
+  try {
+    const profile = await Profile.find().populate('user', ['name', 'avatar']); // user here is the user with the linked type ObjectId in the model - so we findOne with the user object field in the model.
+    //@ts-ignore-end
+    if (!profile) {
+      return res
+        .status(400)
+        .json({ msg: 'There is no profile available to show.' });
+    }
+    res.json(profile);
+  } catch (error) {
+    res.status(500).send('Server Error' + error.message);
+  }
+});
+
+// @route   GET api/profile/user/:id
+// @desc    GET a user profile with id
+// @access  Public
+
+router.get('/user/:id', async (req: express.Request, res: express.Response) => {
+  try {
+    const profile = await Profile.findOne({
+      user: req.params.id,
+    }).populate('user', ['name', 'avatar']); // user here is the user with the linked type ObjectId in the model - so we findOne with the user object field in the model.
+    //@ts-ignore-end
+    if (!profile) {
+      return res
+        .status(400)
+        .json({ msg: 'There is no profile available for this user.' });
+    }
+    res.json(profile);
+  } catch (err) {
+    if (err.kind == 'ObjectId') {
+      return res
+        .status(400)
+        .json({ msg: 'There is no profile available for this user.' });
+    }
+    res.status(500).send('Server Error' + err.message);
+  }
+});
 
 module.exports = router;

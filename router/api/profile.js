@@ -60,7 +60,7 @@ router.get('/me', Auth, function (req, res) { return __awaiter(void 0, void 0, v
                 return [4 /*yield*/, Profile.findOne({
                         //@ts-ignore-start
                         user: req.user.id,
-                    }).populate('User', ['name', 'avatar'])];
+                    }).populate('user', ['name', 'avatar'])];
             case 1:
                 profile = _a.sent();
                 //@ts-ignore-end
@@ -146,6 +146,69 @@ router.post('/', [
                 res.status(500).send('Server Error' + error_2.message);
                 return [3 /*break*/, 7];
             case 7: return [2 /*return*/];
+        }
+    });
+}); });
+// @route   GET api/profile
+// @desc    GET all user profiles
+// @access  Public
+router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var profile, error_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, Profile.find().populate('user', ['name', 'avatar'])];
+            case 1:
+                profile = _a.sent();
+                //@ts-ignore-end
+                if (!profile) {
+                    return [2 /*return*/, res
+                            .status(400)
+                            .json({ msg: 'There is no profile available to show.' })];
+                }
+                res.json(profile);
+                return [3 /*break*/, 3];
+            case 2:
+                error_3 = _a.sent();
+                res.status(500).send('Server Error' + error_3.message);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+// @route   GET api/profile/user/:id
+// @desc    GET a user profile with id
+// @access  Public
+router.get('/user/:id', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var profile, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, Profile.findOne({
+                        user: req.params.id,
+                    }).populate('user', ['name', 'avatar'])];
+            case 1:
+                profile = _a.sent();
+                //@ts-ignore-end
+                if (!profile) {
+                    return [2 /*return*/, res
+                            .status(400)
+                            .json({ msg: 'There is no profile available for this user.' })];
+                }
+                res.json(profile);
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                if (err_1.kind == 'ObjectId') {
+                    return [2 /*return*/, res
+                            .status(400)
+                            .json({ msg: 'There is no profile available for this user.' })];
+                }
+                res.status(500).send('Server Error' + err_1.message);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); });
