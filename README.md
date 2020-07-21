@@ -1,6 +1,6 @@
 # DevLink
 
-This application is a full-stack JavaScript implementation of an coders connecting application using the MERN stack and TypeScript.
+This application is a full-stack JavaScript social platform to connect developers powered by the MERN stack and TypeScript.
 
 ## 👨‍💻 Tech stack
 
