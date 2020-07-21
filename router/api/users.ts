@@ -4,7 +4,8 @@ const User = require('../../models/User');
 const { body, validationResult } = require('express-validator');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
-
+const jwt = require('jsonwebtoken');
+const config = require('config');
 const router = express.Router();
 
 // @route   POST api/users/
@@ -53,18 +54,35 @@ router.post(
       const salt = await bcrypt.genSalt(10);
 
       user.password = await bcrypt.hash(password, salt);
-
+      // return a promise
       await user.save();
 
       // return jwt
-      res.status(200).json('New user added successfully');
+      const payload = {
+        //the id id the _id from db and is back with the promise user.save()
+        user: {
+          id: user.id,
+        },
+      };
+
+      jwt.sign(
+        payload,
+        config.get('jwtSecret'),
+        {
+          expiresIn: '5h',
+        },
+        (err: Error, token: string) => {
+          if (err) throw err;
+          return res.json({ token });
+        }
+      );
+
+      // res.status(200).json('New user added successfully');
     } catch {
       (err: Error) => {
         res.status(500).json('Server Error' + err);
       };
     }
-
-    const date = req.body.date;
   }
 );
 

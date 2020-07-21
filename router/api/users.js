@@ -48,6 +48,8 @@ var User = require('../../models/User');
 var _a = require('express-validator'), body = _a.body, validationResult = _a.validationResult;
 var gravatar = require('gravatar');
 var bcrypt = require('bcryptjs');
+var jwt = require('jsonwebtoken');
+var config = require('config');
 var router = express.Router();
 // @route   POST api/users/
 // @desc    Test route
@@ -58,7 +60,7 @@ router.post('/', [
     body('email', 'A valid Email Email is required').isEmail(),
     body('password', 'A 6 character Password is required').isLength({ min: 6 }),
 ], function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var errors, _a, name, email, password, user, avatar, salt, _b, _c, date;
+    var errors, _a, name, email, password, user, avatar, salt, _b, payload, _c;
     return __generator(this, function (_d) {
         switch (_d.label) {
             case 0:
@@ -97,11 +99,24 @@ router.post('/', [
                 return [4 /*yield*/, bcrypt.hash(password, salt)];
             case 4:
                 _b.password = _d.sent();
+                // return a promise
                 return [4 /*yield*/, user.save()];
             case 5:
+                // return a promise
                 _d.sent();
-                // return jwt
-                res.status(200).json('New user added successfully');
+                payload = {
+                    //the id id the _id from db and is back with the promise user.save()
+                    user: {
+                        id: user.id,
+                    },
+                };
+                jwt.sign(payload, config.get('jwtSecret'), {
+                    expiresIn: '5h',
+                }, function (err, token) {
+                    if (err)
+                        throw err;
+                    return res.json({ token: token });
+                });
                 return [3 /*break*/, 7];
             case 6:
                 _c = _d.sent();
@@ -109,9 +124,7 @@ router.post('/', [
                     res.status(500).json('Server Error' + err);
                 });
                 return [3 /*break*/, 7];
-            case 7:
-                date = req.body.date;
-                return [2 /*return*/];
+            case 7: return [2 /*return*/];
         }
     });
 }); });
