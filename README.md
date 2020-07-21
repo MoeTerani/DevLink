@@ -10,6 +10,12 @@ This application is a full-stack JavaScript implementation of an coders connecti
 - Express
 - MongoDB
 - Mongoose
+- axios
+- bcryptjs
+- config
+- express-validator
+- Gravatar
+- JWT
 
 ## 🔥 Getting started
 
