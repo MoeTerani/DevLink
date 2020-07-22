@@ -267,4 +267,87 @@ router.delete(
     }
   }
 );
+// @route   PUT api/profile/education
+// @desc    Add  education to a profile
+// @access  Private
+
+router.put(
+  '/education',
+  [
+    Auth,
+    [
+      body('school', 'School is required').not().isEmpty(),
+      body('degree', 'Degree is required').not().isEmpty(),
+      body('fieldofstudy', 'Field of study is required').not().isEmpty(),
+      body('from', 'From date is required and needs to be from the past')
+        .not()
+        .isEmpty()
+        .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
+    ],
+  ],
+  async (req: express.Request, res: express.Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const {
+      school,
+      degree,
+      fieldofstudy,
+      from,
+      to,
+      current,
+      description,
+    } = req.body;
+
+    const newEducation = {
+      school,
+      degree,
+      fieldofstudy,
+      from,
+      to,
+      current,
+      description,
+    };
+
+    try {
+      //@ts-ignore-start
+      let profile = await Profile.findOne({ user: req.user.id });
+      //@ts-ignore-end
+
+      profile.education.push(newEducation);
+
+      await profile.save();
+      res.json(profile);
+    } catch (error) {
+      res.status(500).send('Server Error' + error.message);
+    }
+  }
+);
+
+// @route   DELETE api/profile/education
+// @desc    DELETE  education of a profile
+// @access  Private
+
+router.delete(
+  '/education/:id',
+  Auth,
+  async (req: express.Request, res: express.Response) => {
+    try {
+      //@ts-ignore-start
+      let profile = await Profile.findOne({ user: req.user.id });
+      //@ts-ignore-end
+      const id = req.params.id;
+      profile.education = profile.education.filter(
+        (education: any) => education.id !== id
+      );
+
+      await profile.save();
+      res.json(profile);
+    } catch (error) {
+      res.status(500).send('Server Error' + error.message);
+    }
+  }
+);
 module.exports = router;

@@ -327,4 +327,88 @@ router.delete('/experience/:id', Auth, function (req, res) { return __awaiter(vo
         }
     });
 }); });
+// @route   PUT api/profile/education
+// @desc    Add  education to a profile
+// @access  Private
+router.put('/education', [
+    Auth,
+    [
+        body('school', 'School is required').not().isEmpty(),
+        body('degree', 'Degree is required').not().isEmpty(),
+        body('fieldofstudy', 'Field of study is required').not().isEmpty(),
+        body('from', 'From date is required and needs to be from the past')
+            .not()
+            .isEmpty()
+            .custom(function (value, _a) {
+            var req = _a.req;
+            return (req.body.to ? value < req.body.to : true);
+        }),
+    ],
+], function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var errors, _a, school, degree, fieldofstudy, from, to, current, description, newEducation, profile, error_6;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                errors = validationResult(req);
+                if (!errors.isEmpty()) {
+                    return [2 /*return*/, res.status(400).json({ errors: errors.array() })];
+                }
+                _a = req.body, school = _a.school, degree = _a.degree, fieldofstudy = _a.fieldofstudy, from = _a.from, to = _a.to, current = _a.current, description = _a.description;
+                newEducation = {
+                    school: school,
+                    degree: degree,
+                    fieldofstudy: fieldofstudy,
+                    from: from,
+                    to: to,
+                    current: current,
+                    description: description,
+                };
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 4, , 5]);
+                return [4 /*yield*/, Profile.findOne({ user: req.user.id })];
+            case 2:
+                profile = _b.sent();
+                //@ts-ignore-end
+                profile.education.push(newEducation);
+                return [4 /*yield*/, profile.save()];
+            case 3:
+                _b.sent();
+                res.json(profile);
+                return [3 /*break*/, 5];
+            case 4:
+                error_6 = _b.sent();
+                res.status(500).send('Server Error' + error_6.message);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
+        }
+    });
+}); });
+// @route   DELETE api/profile/education
+// @desc    DELETE  education of a profile
+// @access  Private
+router.delete('/education/:id', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var profile, id_2, error_7;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                return [4 /*yield*/, Profile.findOne({ user: req.user.id })];
+            case 1:
+                profile = _a.sent();
+                id_2 = req.params.id;
+                profile.education = profile.education.filter(function (education) { return education.id !== id_2; });
+                return [4 /*yield*/, profile.save()];
+            case 2:
+                _a.sent();
+                res.json(profile);
+                return [3 /*break*/, 4];
+            case 3:
+                error_7 = _a.sent();
+                res.status(500).send('Server Error' + error_7.message);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
 module.exports = router;
