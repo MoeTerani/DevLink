@@ -188,4 +188,83 @@ router.delete(
   }
 );
 
+// @route   PUT api/profile/experience
+// @desc    Add  experience to a profile
+// @access  Private
+
+router.put(
+  '/experience',
+  [
+    Auth,
+    [
+      body('title', 'title is required').not().isEmpty(),
+      body('company', 'company is required').not().isEmpty(),
+      body('from', 'from date is required').not().isEmpty(),
+    ],
+  ],
+  async (req: express.Request, res: express.Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const {
+      title,
+      company,
+      location,
+      from,
+      to,
+      current,
+      description,
+    } = req.body;
+
+    const newExperience = {
+      title,
+      company,
+      location,
+      from,
+      to,
+      current,
+      description,
+    };
+
+    try {
+      //@ts-ignore-start
+      let profile = await Profile.findOne({ user: req.user.id });
+      //@ts-ignore-end
+
+      profile.experience.push(newExperience);
+
+      await profile.save();
+      res.json(profile);
+    } catch (error) {
+      res.status(500).send('Server Error' + error.message);
+    }
+  }
+);
+
+// @route   DELETE api/profile/experience
+// @desc    DELETE  experience of a profile
+// @access  Private
+
+router.delete(
+  '/experience/:id',
+  Auth,
+  async (req: express.Request, res: express.Response) => {
+    try {
+      //@ts-ignore-start
+      let profile = await Profile.findOne({ user: req.user.id });
+      //@ts-ignore-end
+      const id = req.params.id;
+      profile.experience = profile.experience.filter(
+        (experience: any) => experience.id !== id
+      );
+
+      await profile.save();
+      res.json(profile);
+    } catch (error) {
+      res.status(500).send('Server Error' + error.message);
+    }
+  }
+);
 module.exports = router;
