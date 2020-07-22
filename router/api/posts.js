@@ -54,7 +54,7 @@ var Post = require('../../models/Post');
 // @desc    Create a post
 // @access  Private
 router.post('/', [Auth, [body('text', 'text is required').not().isEmpty()]], function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var errors, user, text, newPost, error_1;
+    var errors, user, text, newPost, post, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -78,14 +78,45 @@ router.post('/', [Auth, [body('text', 'text is required').not().isEmpty()]], fun
                 });
                 return [4 /*yield*/, newPost.save()];
             case 3:
-                _a.sent();
-                res.json(newPost);
+                post = _a.sent();
+                res.json(post);
                 return [3 /*break*/, 5];
             case 4:
                 error_1 = _a.sent();
                 res.status(500).send('Server Error' + error_1.message);
                 return [3 /*break*/, 5];
             case 5: return [2 /*return*/];
+        }
+    });
+}); });
+// @route   GET api/post/me
+// @desc    Get current user posts
+// @access  Private
+router.get('/me', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var post, error_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, Post.find({
+                        //@ts-ignore-start
+                        user: req.user.id,
+                    }).populate('user', ['name', 'avatar'])];
+            case 1:
+                post = _a.sent();
+                //@ts-ignore-end
+                if (!post) {
+                    return [2 /*return*/, res
+                            .status(400)
+                            .json({ msg: 'There is no profile available for this user.' })];
+                }
+                res.json(post);
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _a.sent();
+                res.status(500).send('Server Error' + error_2.message);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); });

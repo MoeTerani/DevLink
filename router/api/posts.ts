@@ -24,7 +24,9 @@ router.post(
       //@ts-ignore-start
       const user: any = await User.findById(req.user.id).select('-password');
       //@ts-ignore-end
+
       const { text } = req.body;
+
       const newPost = new Post({
         text: text,
         name: user.name,
@@ -34,12 +36,34 @@ router.post(
         //@ts-ignore-end
       });
 
-      await newPost.save();
-      res.json(newPost);
+      const post = await newPost.save();
+      res.json(post);
     } catch (error) {
       res.status(500).send('Server Error' + error.message);
     }
   }
 );
+
+// @route   GET api/post/me
+// @desc    Get current user posts
+// @access  Private
+
+router.get('/me', Auth, async (req: express.Request, res: express.Response) => {
+  try {
+    const post = await Post.find({
+      //@ts-ignore-start
+      user: req.user.id,
+    }).populate('user', ['name', 'avatar']); // user here is the user with the linked type ObjectId in the model - so we findOne with the user object field in the model.
+    //@ts-ignore-end
+    if (!post) {
+      return res
+        .status(400)
+        .json({ msg: 'There is no profile available for this user.' });
+    }
+    res.json(post);
+  } catch (error) {
+    res.status(500).send('Server Error' + error.message);
+  }
+});
 
 module.exports = router;
