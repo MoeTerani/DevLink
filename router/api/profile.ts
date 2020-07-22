@@ -282,7 +282,9 @@ router.put(
       body('from', 'From date is required and needs to be from the past')
         .not()
         .isEmpty()
+        //@ts-ignore-start
         .custom((value, { req }) => (req.body.to ? value < req.body.to : true)),
+      //@ts-ignore-end
     ],
   ],
   async (req: express.Request, res: express.Response) => {

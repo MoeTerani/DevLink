@@ -339,6 +339,7 @@ router.put('/education', [
         body('from', 'From date is required and needs to be from the past')
             .not()
             .isEmpty()
+            //@ts-ignore-start
             .custom(function (value, _a) {
             var req = _a.req;
             return (req.body.to ? value < req.body.to : true);
