@@ -48,9 +48,12 @@ router.post(
 // @desc    Get All the user's posts
 // @access  Private
 
-router.get('/', Auth, async (req: express.Request, res: express.Response) => {
+router.get('/me', Auth, async (req: express.Request, res: express.Response) => {
   try {
-    const post = await Post.find().sort({ date: -1 }); // mongoose : sort by date , most recent first
+    //@ts-ignore-start
+    const post = await Post.find({ user: req.user.id }).sort({
+      date: -1,
+    }); // mongoose : sort by date , most recent first
     //@ts-ignore-end
     if (!post) {
       return res
@@ -75,14 +78,41 @@ router.get(
       const post = await Post.findById(req.params.id);
       if (!post) {
         return res
-          .status(400)
+          .status(404)
           .json({ msg: `There is no Post with this id: ${req.params.id} ` });
       }
       res.json(post);
     } catch (error) {
+      if (error.kind === 'ObjectId') {
+        return res
+          .status(404)
+          .json({ msg: `There is no Post with this id: ${req.params.id} ` });
+      }
       res.status(500).send('Server Error' + error.message);
     }
   }
 );
+
+// @route   GET api/post
+// @desc    Get All posts
+// @access  Private
+
+router.get('/', Auth, async (req: express.Request, res: express.Response) => {
+  try {
+    //@ts-ignore-start
+    const post = await Post.find().sort({
+      date: -1,
+    }); // mongoose : sort by date , most recent first
+    //@ts-ignore-end
+    if (!post) {
+      return res
+        .status(400)
+        .json({ msg: 'There is no post available for this user.' });
+    }
+    res.json(post);
+  } catch (error) {
+    res.status(500).send('Server Error' + error.message);
+  }
+});
 
 module.exports = router;
