@@ -90,9 +90,9 @@ router.post('/', [Auth, [body('text', 'text is required').not().isEmpty()]], fun
     });
 }); });
 // @route   GET api/post/me
-// @desc    Get current user posts
+// @desc    Get All the user's posts
 // @access  Private
-router.get('/me', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+router.get('/', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var post, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {

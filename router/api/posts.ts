@@ -45,10 +45,10 @@ router.post(
 );
 
 // @route   GET api/post/me
-// @desc    Get current user posts
+// @desc    Get All the user's posts
 // @access  Private
 
-router.get('/me', Auth, async (req: express.Request, res: express.Response) => {
+router.get('/', Auth, async (req: express.Request, res: express.Response) => {
   try {
     const post = await Post.find({
       //@ts-ignore-start
