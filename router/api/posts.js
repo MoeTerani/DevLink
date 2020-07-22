@@ -89,7 +89,7 @@ router.post('/', [Auth, [body('text', 'text is required').not().isEmpty()]], fun
         }
     });
 }); });
-// @route   GET api/post/me
+// @route   GET api/post
 // @desc    Get All the user's posts
 // @access  Private
 router.get('/', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -98,23 +98,47 @@ router.get('/', Auth, function (req, res) { return __awaiter(void 0, void 0, voi
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, Post.find({
-                        //@ts-ignore-start
-                        user: req.user.id,
-                    }).populate('user', ['name', 'avatar'])];
+                return [4 /*yield*/, Post.find().sort({ date: -1 })];
             case 1:
                 post = _a.sent();
                 //@ts-ignore-end
                 if (!post) {
                     return [2 /*return*/, res
                             .status(400)
-                            .json({ msg: 'There is no profile available for this user.' })];
+                            .json({ msg: 'There is no post available for this user.' })];
                 }
                 res.json(post);
                 return [3 /*break*/, 3];
             case 2:
                 error_2 = _a.sent();
                 res.status(500).send('Server Error' + error_2.message);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); });
+// @route   GET api/post/:id
+// @desc    Get a  post by id
+// @access  Private
+router.get('/:id', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var post, error_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, Post.findById(req.params.id)];
+            case 1:
+                post = _a.sent();
+                if (!post) {
+                    return [2 /*return*/, res
+                            .status(400)
+                            .json({ msg: "There is no Post with this id: " + req.params.id + " " })];
+                }
+                res.json(post);
+                return [3 /*break*/, 3];
+            case 2:
+                error_3 = _a.sent();
+                res.status(500).send('Server Error' + error_3.message);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
         }

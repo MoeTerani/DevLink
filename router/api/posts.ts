@@ -44,26 +44,45 @@ router.post(
   }
 );
 
-// @route   GET api/post/me
+// @route   GET api/post
 // @desc    Get All the user's posts
 // @access  Private
 
 router.get('/', Auth, async (req: express.Request, res: express.Response) => {
   try {
-    const post = await Post.find({
-      //@ts-ignore-start
-      user: req.user.id,
-    }).populate('user', ['name', 'avatar']); // user here is the user with the linked type ObjectId in the model - so we findOne with the user object field in the model.
+    const post = await Post.find().sort({ date: -1 }); // mongoose : sort by date , most recent first
     //@ts-ignore-end
     if (!post) {
       return res
         .status(400)
-        .json({ msg: 'There is no profile available for this user.' });
+        .json({ msg: 'There is no post available for this user.' });
     }
     res.json(post);
   } catch (error) {
     res.status(500).send('Server Error' + error.message);
   }
 });
+
+// @route   GET api/post/:id
+// @desc    Get a  post by id
+// @access  Private
+
+router.get(
+  '/:id',
+  Auth,
+  async (req: express.Request, res: express.Response) => {
+    try {
+      const post = await Post.findById(req.params.id);
+      if (!post) {
+        return res
+          .status(400)
+          .json({ msg: `There is no Post with this id: ${req.params.id} ` });
+      }
+      res.json(post);
+    } catch (error) {
+      res.status(500).send('Server Error' + error.message);
+    }
+  }
+);
 
 module.exports = router;
