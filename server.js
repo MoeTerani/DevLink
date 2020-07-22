@@ -7,7 +7,7 @@ var app = express();
 connectDB();
 // initialize Middleware
 app.use(express.json({ extended: false }));
-app.get('/', function (req, res) { return res.send('API runnning '); });
+app.get('/', function (req, res) { return res.send('API running '); });
 // Routes
 app.use('/api/users', require('./router/api/users'));
 app.use('/api/auth', require('./router/api/auth'));

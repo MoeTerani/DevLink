@@ -242,14 +242,11 @@ router.put('/like/:id', Auth, function (req, res) { return __awaiter(void 0, voi
             case 1:
                 post = _a.sent();
                 if (!post.likes.find(function (l) { return l.user.toString() === req.user.id; })) return [3 /*break*/, 4];
-                console.log('inside the find');
-                // post.likes.filter((item) => item.user.toString() !== req.user.id);
                 return [4 /*yield*/, post.likes
                         //@ts-ignore-start
                         .find(function (l) { return l.user.toString() === req.user.id; })
                         .remove()];
             case 2:
-                // post.likes.filter((item) => item.user.toString() !== req.user.id);
                 _a.sent();
                 //@ts-ignore-end
                 return [4 /*yield*/, post.save()];
@@ -272,6 +269,95 @@ router.put('/like/:id', Auth, function (req, res) { return __awaiter(void 0, voi
                 res.status(500).send('Server Error' + error_6.message);
                 return [3 /*break*/, 7];
             case 7: return [2 /*return*/];
+        }
+    });
+}); });
+// @route   POST api/posts/comment/:id
+// @desc    Create a comment on a post by id
+// @access  Private
+router.post('/comment/:id', [Auth, [body('text', 'text is required').not().isEmpty()]], function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var errors, user, post, newComment, error_7;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                errors = validationResult(req);
+                if (!errors.isEmpty()) {
+                    return [2 /*return*/, res.status(400).json({ errors: errors.array() })];
+                }
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 5, , 6]);
+                return [4 /*yield*/, User.findById(req.user.id).select('-password')];
+            case 2:
+                user = _a.sent();
+                return [4 /*yield*/, Post.findById(req.params.id)];
+            case 3:
+                post = _a.sent();
+                newComment = new Post({
+                    text: req.body.text,
+                    name: user.name,
+                    avatar: user.avatar,
+                    //@ts-ignore-start
+                    user: req.user.id,
+                });
+                post.comments.push(newComment);
+                return [4 /*yield*/, post.save()];
+            case 4:
+                _a.sent();
+                res.json(post.comments);
+                return [3 /*break*/, 6];
+            case 5:
+                error_7 = _a.sent();
+                console.log(error_7);
+                res.status(500).send('Server Error ' + error_7);
+                return [3 /*break*/, 6];
+            case 6: return [2 /*return*/];
+        }
+    });
+}); });
+// @route   DELETE api/posts/comment/:user_id/:comment_id
+// @desc    DELETE a  comment on a post  by id
+// @access  Private
+router.delete('/comment/:post_id/:comment_id', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var post, comment, error_8;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 4, , 5]);
+                return [4 /*yield*/, Post.findById(req.params.post_id)];
+            case 1:
+                post = _a.sent();
+                //check if the user is the owner of the post before deleting it.
+                //@ts-ignore-start
+                if (post.user.toString() !== req.user.id) {
+                    //@ts-ignore-end
+                    return [2 /*return*/, res.status(401).json({ msg: 'User not authorized' })];
+                }
+                return [4 /*yield*/, post.comments.find(function (comment) { return comment.id === req.params.comment_id; })];
+            case 2:
+                comment = _a.sent();
+                // Make sure comment exists
+                if (!comment) {
+                    return [2 /*return*/, res.status(404).json({ msg: 'Comment does not exist' })];
+                }
+                post.comments = post.comments.filter(function (_a) {
+                    var id = _a.id;
+                    return id !== req.params.comment_id;
+                });
+                return [4 /*yield*/, post.save()];
+            case 3:
+                _a.sent();
+                return [2 /*return*/, res.json(post.comments)];
+            case 4:
+                error_8 = _a.sent();
+                if (error_8.kind === 'ObjectId') {
+                    return [2 /*return*/, res
+                            .status(404)
+                            .json({ msg: "There is no Post or comment with these id's" })];
+                }
+                res.status(500).send('Server Error' + error_8.message);
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); });

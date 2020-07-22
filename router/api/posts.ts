@@ -171,8 +171,6 @@ router.put(
 
       //check if the user already liked this post
       if (post.likes.find((l) => l.user.toString() === req.user.id)) {
-        console.log('inside the find');
-        // post.likes.filter((item) => item.user.toString() !== req.user.id);
         await post.likes
           //@ts-ignore-start
           .find((l) => l.user.toString() === req.user.id)
@@ -187,6 +185,91 @@ router.put(
       await post.save();
       res.json(post.likes);
     } catch (error) {
+      res.status(500).send('Server Error' + error.message);
+    }
+  }
+);
+
+// @route   POST api/posts/comment/:id
+// @desc    Create a comment on a post by id
+// @access  Private
+
+router.post(
+  '/comment/:id',
+  [Auth, [body('text', 'text is required').not().isEmpty()]],
+  async (req: express.Request, res: express.Response) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      //@ts-ignore-start
+      const user: any = await User.findById(req.user.id).select('-password');
+      //@ts-ignore-end
+      const post = await Post.findById(req.params.id);
+
+      const newComment = new Post({
+        text: req.body.text,
+        name: user.name,
+        avatar: user.avatar,
+        //@ts-ignore-start
+        user: req.user.id,
+        //@ts-ignore-end
+      });
+
+      post.comments.push(newComment);
+
+      await post.save();
+
+      res.json(post.comments);
+    } catch (error) {
+      console.log(error);
+      res.status(500).send('Server Error ' + error);
+    }
+  }
+);
+
+// @route   DELETE api/posts/comment/:user_id/:comment_id
+// @desc    DELETE a  comment on a post  by id
+// @access  Private
+
+router.delete(
+  '/comment/:post_id/:comment_id',
+  Auth,
+  async (req: express.Request, res: express.Response) => {
+    try {
+      const post = await Post.findById(req.params.post_id);
+      //check if the user is the owner of the post before deleting it.
+
+      //@ts-ignore-start
+      if (post.user.toString() !== req.user.id) {
+        //@ts-ignore-end
+        return res.status(401).json({ msg: 'User not authorized' });
+      }
+
+      const comment = await post.comments.find(
+        (comment: any) => comment.id === req.params.comment_id
+      );
+
+      // Make sure comment exists
+      if (!comment) {
+        return res.status(404).json({ msg: 'Comment does not exist' });
+      }
+
+      post.comments = post.comments.filter(
+        ({ id }: { id: String }) => id !== req.params.comment_id
+      );
+
+      await post.save();
+
+      return res.json(post.comments);
+    } catch (error) {
+      if (error.kind === 'ObjectId') {
+        return res
+          .status(404)
+          .json({ msg: `There is no Post or comment with these id's` });
+      }
       res.status(500).send('Server Error' + error.message);
     }
   }

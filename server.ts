@@ -10,7 +10,7 @@ connectDB();
 // initialize Middleware
 app.use(express.json({ extended: false }));
 
-app.get('/', (req: any, res: any) => res.send('API runnning '));
+app.get('/', (req: any, res: any) => res.send('API running '));
 
 // Routes
 
