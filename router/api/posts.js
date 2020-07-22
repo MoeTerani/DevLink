@@ -181,4 +181,52 @@ router.get('/', Auth, function (req, res) { return __awaiter(void 0, void 0, voi
         }
     });
 }); });
+// @route   DELETE api/post/:id
+// @desc    DELETE a  post by id
+// @access  Private
+router.delete('/:id', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var post, error_5;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                return [4 /*yield*/, Post.findById(req.params.id)];
+            case 1:
+                post = _a.sent();
+                //check if the user is the owner of the post before deleting it.
+                // this is the post object e.x.:
+                /* {
+                  _id: 5f181b125ef6faa6c8f60531,
+                  text: 'Lorem ipsum ',
+                  name: 'john Doe',
+                  avatar: '//www.gravatar.com/avatar/d415f0e30c471dfdd9bc4f827329ef48',
+                  user: 5f17520a70ae7f9445037703,
+                  likes: [],
+                  comments: [],
+                  date: 2020-07-22T10:55:14.983Z,
+                  __v: 0
+                } */
+                //@ts-ignore-start
+                if (post.user.toString() !== req.user.id) {
+                    //@ts-ignore-end
+                    return [2 /*return*/, res.status(401).json({ msg: 'User not authorized' })];
+                }
+                return [4 /*yield*/, post.remove()];
+            case 2:
+                _a.sent();
+                res.json(post);
+                return [3 /*break*/, 4];
+            case 3:
+                error_5 = _a.sent();
+                if (error_5.kind === 'ObjectId') {
+                    return [2 /*return*/, res
+                            .status(404)
+                            .json({ msg: "There is no Post with this id: " + req.params.id + " " })];
+                }
+                res.status(500).send('Server Error' + error_5.message);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); });
 module.exports = router;

@@ -115,4 +115,45 @@ router.get('/', Auth, async (req: express.Request, res: express.Response) => {
   }
 });
 
+// @route   DELETE api/post/:id
+// @desc    DELETE a  post by id
+// @access  Private
+
+router.delete(
+  '/:id',
+  Auth,
+  async (req: express.Request, res: express.Response) => {
+    try {
+      const post = await Post.findById(req.params.id);
+      //check if the user is the owner of the post before deleting it.
+      // this is the post object e.x.:
+      /* {
+        _id: 5f181b125ef6faa6c8f60531,
+        text: 'Lorem ipsum ',
+        name: 'john Doe',
+        avatar: '//www.gravatar.com/avatar/d415f0e30c471dfdd9bc4f827329ef48',
+        user: 5f17520a70ae7f9445037703,
+        likes: [],
+        comments: [],
+        date: 2020-07-22T10:55:14.983Z,
+        __v: 0
+      } */
+      //@ts-ignore-start
+      if (post.user.toString() !== req.user.id) {
+        //@ts-ignore-end
+        return res.status(401).json({ msg: 'User not authorized' });
+      }
+      await post.remove();
+      res.json(post);
+    } catch (error) {
+      if (error.kind === 'ObjectId') {
+        return res
+          .status(404)
+          .json({ msg: `There is no Post with this id: ${req.params.id} ` });
+      }
+      res.status(500).send('Server Error' + error.message);
+    }
+  }
+);
+
 module.exports = router;
