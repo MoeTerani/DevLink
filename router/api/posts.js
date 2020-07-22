@@ -181,7 +181,7 @@ router.get('/', Auth, function (req, res) { return __awaiter(void 0, void 0, voi
         }
     });
 }); });
-// @route   DELETE api/post/:id
+// @route   DELETE api/posts/:id
 // @desc    DELETE a  post by id
 // @access  Private
 router.delete('/:id', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -226,6 +226,52 @@ router.delete('/:id', Auth, function (req, res) { return __awaiter(void 0, void 
                 res.status(500).send('Server Error' + error_5.message);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
+        }
+    });
+}); });
+// @route   PUT api/post/like/:id
+// @desc    Update the likes array
+// @access  Private
+router.put('/like/:id', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var post, error_6;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 6, , 7]);
+                return [4 /*yield*/, Post.findById(req.params.id)];
+            case 1:
+                post = _a.sent();
+                if (!post.likes.find(function (l) { return l.user.toString() === req.user.id; })) return [3 /*break*/, 4];
+                console.log('inside the find');
+                // post.likes.filter((item) => item.user.toString() !== req.user.id);
+                return [4 /*yield*/, post.likes
+                        //@ts-ignore-start
+                        .find(function (l) { return l.user.toString() === req.user.id; })
+                        .remove()];
+            case 2:
+                // post.likes.filter((item) => item.user.toString() !== req.user.id);
+                _a.sent();
+                //@ts-ignore-end
+                return [4 /*yield*/, post.save()];
+            case 3:
+                //@ts-ignore-end
+                _a.sent();
+                return [2 /*return*/, res.json(post.likes)];
+            case 4:
+                //@ts-ignore-start
+                post.likes.push({ user: req.user.id });
+                //@ts-ignore-end
+                return [4 /*yield*/, post.save()];
+            case 5:
+                //@ts-ignore-end
+                _a.sent();
+                res.json(post.likes);
+                return [3 /*break*/, 7];
+            case 6:
+                error_6 = _a.sent();
+                res.status(500).send('Server Error' + error_6.message);
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/];
         }
     });
 }); });

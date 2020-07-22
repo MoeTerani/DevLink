@@ -115,7 +115,7 @@ router.get('/', Auth, async (req: express.Request, res: express.Response) => {
   }
 });
 
-// @route   DELETE api/post/:id
+// @route   DELETE api/posts/:id
 // @desc    DELETE a  post by id
 // @access  Private
 
@@ -151,6 +151,42 @@ router.delete(
           .status(404)
           .json({ msg: `There is no Post with this id: ${req.params.id} ` });
       }
+      res.status(500).send('Server Error' + error.message);
+    }
+  }
+);
+
+// @route   PUT api/post/like/:id
+// @desc    Update the likes array
+// @access  Private
+
+router.put(
+  '/like/:id',
+  Auth,
+  async (req: express.Request, res: express.Response) => {
+    try {
+      //@ts-ignore-start
+      const post: any = await Post.findById(req.params.id);
+      //@ts-ignore-end
+
+      //check if the user already liked this post
+      if (post.likes.find((l) => l.user.toString() === req.user.id)) {
+        console.log('inside the find');
+        // post.likes.filter((item) => item.user.toString() !== req.user.id);
+        await post.likes
+          //@ts-ignore-start
+          .find((l) => l.user.toString() === req.user.id)
+          .remove();
+        //@ts-ignore-end
+        await post.save();
+        return res.json(post.likes);
+      }
+      //@ts-ignore-start
+      post.likes.push({ user: req.user.id });
+      //@ts-ignore-end
+      await post.save();
+      res.json(post.likes);
+    } catch (error) {
       res.status(500).send('Server Error' + error.message);
     }
   }
