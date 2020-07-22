@@ -48,6 +48,7 @@ var router = express.Router();
 var Auth = require('../../middleware/auth');
 var Profile = require('../../models/Profile');
 var _a = require('express-validator'), body = _a.body, validationResult = _a.validationResult;
+var User = require('../../models/User');
 // @route   GET api/profile/me
 // @desc    Get current user profile
 // @access  Private
@@ -209,6 +210,43 @@ router.get('/user/:id', function (req, res) { return __awaiter(void 0, void 0, v
                 res.status(500).send('Server Error' + err_1.message);
                 return [3 /*break*/, 3];
             case 3: return [2 /*return*/];
+        }
+    });
+}); });
+// @route   DELETE api/profile
+// @desc    DELETE profile , user and posts
+// @access  Private
+router.delete('/', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var err_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                // todo: remove user s pots
+                // remove profile
+                return [4 /*yield*/, Profile.findOneAndRemove({
+                        //@ts-ignore-start
+                        user: req.user.id,
+                    })];
+            case 1:
+                // todo: remove user s pots
+                // remove profile
+                _a.sent();
+                //remove user
+                return [4 /*yield*/, User.findOneAndRemove({
+                        //@ts-ignore-start
+                        _id: req.user.id,
+                    })];
+            case 2:
+                //remove user
+                _a.sent();
+                res.json('User successfully removed');
+                return [3 /*break*/, 4];
+            case 3:
+                err_2 = _a.sent();
+                res.status(500).send('Server Error' + err_2.message);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); });
