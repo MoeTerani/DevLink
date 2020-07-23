@@ -1,12 +1,15 @@
 import React from 'react';
 import './App.css';
+import NavBar from '../src/components/layout/NavBar';
+import Landing from '../src/components/layout/Landing';
 
-function App() {
+const App = () => {
   return (
     <div className='App'>
-      <h1>APP</h1>
+      <NavBar />
+      <Landing />
     </div>
   );
-}
+};
 
 export default App;
