@@ -1,5 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAlert } from '../../state/actions/alert-action';
 
 interface Props {}
 
@@ -11,6 +13,8 @@ const Register = (props: Props) => {
     password2: '',
   });
 
+  const dispatch = useDispatch();
+
   const { name, email, password, password2 } = formData;
 
   const updateValue = (e: any) =>
@@ -19,8 +23,8 @@ const Register = (props: Props) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (password !== password2) {
-      // setAlert('Passwords do not match', 'danger');
-      console.log('Passwords do not match');
+      dispatch(setAlert('Passwords do not match', 'danger'));
+      // console.log('Passwords do not match');
     } else {
     }
   };
