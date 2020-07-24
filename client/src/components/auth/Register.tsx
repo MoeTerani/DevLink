@@ -1,6 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import axios from 'axios';
-import { config } from 'process';
+import { Link } from 'react-router-dom';
 
 interface Props {}
 
@@ -23,25 +22,6 @@ const Register = (props: Props) => {
       // setAlert('Passwords do not match', 'danger');
       console.log('Passwords do not match');
     } else {
-      const newUser = {
-        name,
-        email,
-        password,
-      };
-      // register({ name, email, password });
-      console.log(formData);
-      try {
-        const config = {
-          headers: { 'Content-Type': 'application/json' },
-        };
-        const body = JSON.stringify(newUser);
-
-        const res = await axios.post('/api/users', body, config);
-
-        console.log(res.data);
-      } catch (error) {
-        console.log(error);
-      }
     }
   };
 
@@ -106,7 +86,7 @@ const Register = (props: Props) => {
         <input type='submit' className='btn btn-primary' value='Register' />
       </form>
       <p className='my-1'>
-        Already have an account? <a href='login.html'>Sign In</a>
+        Already have an account? <Link to='/login'>Sign In</Link>
       </p>
     </Fragment>
   );
