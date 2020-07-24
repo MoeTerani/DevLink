@@ -8,9 +8,9 @@ export default (
 ) => {
   switch (type) {
     case SET_ALERT:
-      return { ...state, payload };
+      return [...state, payload];
     case REMOVE_ALERT:
-      return state.filter((alert: any) => alert.id !== payload.id);
+      return state.filter((alert: any) => alert.id !== payload);
 
     default:
       return state;

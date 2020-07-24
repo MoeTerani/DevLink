@@ -5,6 +5,7 @@ import Landing from '../src/components/layout/Landing';
 import Login from '../src/components/auth/Login';
 import Register from '../src/components/auth/Register';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Alert from '../src/components/layout/Alert';
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
           <Landing />
         </Route>
         <section className='container'>
+          <Alert />
           <Switch>
             <Route exact path='/register' component={Register} />
             <Route exact path='/login' component={Login} />
