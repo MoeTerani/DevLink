@@ -59,7 +59,7 @@ router.post(
 
       // return jwt
       const payload = {
-        //the id id the _id from db and is back with the promise user.save()
+        //the id is the _id from db and is back with the promise user.save()
         user: {
           id: user.id,
         },

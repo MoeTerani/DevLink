@@ -12,7 +12,7 @@ module.exports = (req: any, res: any, next: any) => {
     return res.status(401).json({ msg: 'No token , Access Denied 🚫' });
   }
 
-  // veeify token and
+  // verify token and
 
   try {
     const decoded = jwt.verify(token, config.get('jwtSecret'));

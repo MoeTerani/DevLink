@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAlert } from '../../state/actions/alert-action';
+import { registerAction } from '../../state/actions/auth-action';
 
 interface Props {}
 
@@ -26,6 +27,7 @@ const Register = (props: Props) => {
       dispatch(setAlert('Passwords do not match', 'danger'));
       // console.log('Passwords do not match');
     } else {
+      dispatch(registerAction({ name, email, password }));
     }
   };
 
