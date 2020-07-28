@@ -23,7 +23,7 @@ router.get('/', Auth, async (req: express.Request, res: express.Response) => {
 });
 
 // @route   POST api/auth/
-// @desc    Athenticate user and get token
+// @desc    Authenticate user and get token
 // @access  public
 router.post(
   '/',
@@ -70,15 +70,13 @@ router.post(
         payload,
         config.get('jwtSecret'),
         {
-          expiresIn: '5h',
+          expiresIn: '10h',
         },
         (err: Error, token: string) => {
           if (err) throw err;
           return res.json({ token });
         }
       );
-
-      // res.status(200).json('New user added successfully');
     } catch {
       (err: Error) => {
         res.status(500).json('Server Error' + err);

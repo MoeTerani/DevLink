@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setAlert } from '../../state/actions/alert-action';
 import { registerAction } from '../../state/actions/auth-action';
@@ -16,6 +16,10 @@ const Register = (props: Props) => {
 
   const dispatch = useDispatch();
 
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.isAuthenticated
+  );
+
   const { name, email, password, password2 } = formData;
 
   const updateValue = (e: any) =>
@@ -30,6 +34,10 @@ const Register = (props: Props) => {
       dispatch(registerAction({ name, email, password }));
     }
   };
+
+  if (isAuthenticated) {
+    return <Redirect to='/dashboard' />;
+  }
 
   return (
     <Fragment>

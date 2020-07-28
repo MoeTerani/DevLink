@@ -1,9 +1,17 @@
 import React, { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginAction } from '../../state/actions/auth-action';
 
 interface Props {}
 
 const Login = (props: Props) => {
+  const dispatch = useDispatch();
+
+  const isAuthenticated = useSelector(
+    (state: any) => state.auth.isAuthenticated
+  );
+
   const [logIn, setLogIn] = useState({
     email: '',
     password: '',
@@ -17,9 +25,12 @@ const Login = (props: Props) => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
+      dispatch(loginAction({ email, password }));
     } catch (error) {}
   };
-
+  if (isAuthenticated) {
+    return <Redirect to='/dashboard' />;
+  }
   return (
     <Fragment>
       <h1 className='large text-primary'>Sign In</h1>
