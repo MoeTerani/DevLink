@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import './App.css';
 import NavBar from '../src/components/layout/NavBar';
 import Landing from '../src/components/layout/Landing';
@@ -6,8 +7,22 @@ import Login from '../src/components/auth/Login';
 import Register from '../src/components/auth/Register';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Alert from '../src/components/layout/Alert';
+import setAuthToken from './utils/setAuthToken';
+import { loadUser } from '../src/state/actions/auth-action';
+
+if (localStorage.token) {
+  setAuthToken(localStorage.token);
+}
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadUser());
+    // return () => {
+    //   console.log('APP component unmounted');
+    // };
+  }, []);
   return (
     <Router>
       <div className='App'>

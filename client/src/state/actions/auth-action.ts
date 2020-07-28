@@ -7,27 +7,24 @@ import {
 } from '../types';
 import axios from 'axios';
 import { setAlert } from '../../state/actions/alert-action';
+import setAuthToken from '../../utils/setAuthToken';
 
 // Load user(Authenticate the user on every endpoint hit)
 
 export const loadUser = () => async (dispatch: any) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  };
+  if (localStorage.token) {
+    setAuthToken(localStorage.token);
+  }
 
   try {
-    const res = await axios.get('/api/auth', config);
+    const res = await axios.get('/api/auth');
 
-    dispatch({ type: REGISTER_SUCCESS, payload: res.data });
-  } catch (err) {
-    const errors = err.response.data.errors;
-
-    if (errors) {
-      errors.forEach((err: any) => dispatch(setAlert(err.msg, 'danger')));
-    }
-    dispatch({ type: REGISTER_FAIL });
+    dispatch({
+      type: USER_LOADED,
+      payload: res.data, // this is gonna be the user data minus password in BE.
+    });
+  } catch (error) {
+    dispatch({ type: AUTH_ERROR });
   }
 };
 
