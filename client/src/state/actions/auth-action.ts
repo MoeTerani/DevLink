@@ -21,7 +21,7 @@ export const loadUser = () => async (dispatch: any) => {
 
     dispatch({
       type: USER_LOADED,
-      payload: res.data, // this is gonna be the user data minus password in BE.
+      payload: res.data.user, // this is gonna be the user data minus password in BE.
     });
   } catch (error) {
     dispatch({ type: AUTH_ERROR });
