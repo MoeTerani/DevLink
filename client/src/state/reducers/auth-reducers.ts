@@ -7,6 +7,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  CLEAR_PROFILE,
 } from '../types';
 
 const initialState = {
@@ -39,6 +40,7 @@ export default (state = initialState, { type, payload }: Register) => {
 
       return {
         ...state,
+        user: null,
         token: null,
         isAuthenticated: false,
         isLoading: false,

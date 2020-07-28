@@ -1,12 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import { getCurrentProfileAction } from '../../state/actions/profile-action';
 import { useDispatch, useSelector } from 'react-redux';
+import Spinner from '../layout/Spinner';
+import { Link } from 'react-router-dom';
 
 interface Props {}
 
 const Dashboard = (props: Props) => {
   const Auth = useSelector((state: any) => state.auth);
-  const { isAuthenticated, isLoading } = Auth;
+  const profileState = useSelector((state: any) => state.profile);
+  const { isAuthenticated, user } = Auth;
+  const { profile, isLoading } = profileState;
 
   const dispatch = useDispatch();
 
@@ -14,10 +18,25 @@ const Dashboard = (props: Props) => {
     dispatch(getCurrentProfileAction());
   }, []);
 
-  return (
-    <div>
-      <h1>Dashboard</h1>
-    </div>
+  return isLoading && profile === null ? (
+    <Spinner />
+  ) : (
+    <Fragment>
+      <h1 className='large text-primary'>Dashboard</h1>
+      <p className='lead'>
+        <i className='fas fa-user' /> Welcome {user && user.name}
+      </p>
+      {profile !== null ? (
+        <Fragment>HAS</Fragment>
+      ) : (
+        <Fragment>
+          <p>You have not yet setup a profile, please add some info</p>
+          <Link to='/create-profile' className='btn btn-primary my-1'>
+            Create Profile
+          </Link>
+        </Fragment>
+      )}
+    </Fragment>
   );
 };
 

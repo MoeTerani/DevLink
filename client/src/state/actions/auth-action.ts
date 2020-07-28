@@ -7,6 +7,7 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  CLEAR_PROFILE,
 } from '../types';
 import axios from 'axios';
 import { setAlert } from '../../state/actions/alert-action';
@@ -94,5 +95,6 @@ export const loginAction = ({
 
 //LOGOUT and CLEAR PROFILE_ERROR
 export const logout = () => (dispatch: any) => {
+  dispatch({ type: CLEAR_PROFILE });
   dispatch({ type: LOGOUT });
 };
