@@ -8,6 +8,7 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_PROFILE,
+  ACCOUNT_DELETED,
 } from '../types';
 
 const initialState = {
@@ -36,6 +37,7 @@ export default (state = initialState, { type, payload }: Register) => {
     case AUTH_ERROR:
     case LOGIN_FAIL:
     case LOGOUT:
+    case ACCOUNT_DELETED:
       localStorage.removeItem('token');
 
       return {
