@@ -1,23 +1,30 @@
 import React, { useState, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import { createProfile } from '../../state/actions/profile-action';
+import { useDispatch } from 'react-redux';
 
 interface Props {}
 
+const initialState = {
+  company: '',
+  website: '',
+  location: '',
+  status: '',
+  skills: '',
+  githubusername: '',
+  bio: '',
+  twitter: '',
+  facebook: '',
+  linkedin: '',
+  youtube: '',
+  instagram: '',
+};
+
 const CreateProfile = (props: Props) => {
-  const [formData, setFormData] = useState({
-    company: '',
-    website: '',
-    location: '',
-    status: '',
-    skills: '',
-    githubusername: '',
-    bio: '',
-    twitter: '',
-    facebook: '',
-    linkedin: '',
-    youtube: '',
-    instagram: '',
-  });
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const [formData, setFormData] = useState(initialState);
 
   const [displaySocialInputs, toggleSocialInputs] = useState(false);
 
@@ -38,9 +45,13 @@ const CreateProfile = (props: Props) => {
 
   const updateValue = (e: any) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    console.log(formData);
+    createProfile(formData, history);
   };
+
   return (
     <Fragment>
       <h1 className='large text-primary'>Edit Your Profile</h1>
