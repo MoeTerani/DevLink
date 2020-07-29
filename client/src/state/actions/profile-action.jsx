@@ -30,9 +30,9 @@ export const createProfile = (formData, history, edit = false) => async (
     dispatch({ type: GET_PROFILE, payload: res.data });
     dispatch(setAlert(edit ? 'Profile updated' : 'Profile Created', 'success'));
 
-    if (!edit) {
-      history.push('/dashboard '); // we cannot use >Redirect /> in actions , we need the history object
-    }
+    // if (!edit) {
+    history.goBack(); // we cannot use >Redirect /> in actions , we need the history object
+    // }
   } catch (err) {
     const errors = err.response.data.errors;
 

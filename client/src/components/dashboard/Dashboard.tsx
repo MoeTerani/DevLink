@@ -3,6 +3,7 @@ import { getCurrentProfileAction } from '../../state/actions/profile-action';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import { Link } from 'react-router-dom';
+import DashboardNavButtons from './DashboardNavButtons';
 
 interface Props {}
 
@@ -27,7 +28,9 @@ const Dashboard = (props: Props) => {
         <i className='fas fa-user' /> Welcome {user && user.name}
       </p>
       {profile !== null ? (
-        <Fragment>HAS</Fragment>
+        <Fragment>
+          <DashboardNavButtons />
+        </Fragment>
       ) : (
         <Fragment>
           <p>You have not yet setup a profile, please add some info</p>
