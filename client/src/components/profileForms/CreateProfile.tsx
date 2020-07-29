@@ -49,7 +49,7 @@ const CreateProfile = (props: Props) => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     console.log(formData);
-    createProfile(formData, history);
+    dispatch(createProfile(formData, history));
   };
 
   return (
