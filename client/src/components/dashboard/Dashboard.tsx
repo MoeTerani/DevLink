@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Spinner from '../layout/Spinner';
 import { Link } from 'react-router-dom';
 import DashboardNavButtons from './DashboardNavButtons';
+import Experience from './Experience';
+import Education from './Education';
 
 interface Props {}
 
@@ -30,6 +32,8 @@ const Dashboard = (props: Props) => {
       {profile !== null ? (
         <Fragment>
           <DashboardNavButtons />
+          <Experience experience={profile.experience} />
+          <Education education={profile.education} />
         </Fragment>
       ) : (
         <Fragment>
