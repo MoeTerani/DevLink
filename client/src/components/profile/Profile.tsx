@@ -3,7 +3,7 @@ import { getProfileByIdAction } from '../../state/actions/profile-action';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import Spinner from '../layout/Spinner';
-import { loginAction } from '../../state/actions/auth-action';
+import ProfileTop from './ProfileTop';
 
 interface Props {}
 
@@ -39,9 +39,9 @@ const Profile = (props: Props) => {
                 Edit Profile
               </Link>
             )}
-          {/* <div className='profile-grid my-1'>
+          <div className='profile-grid my-1'>
             <ProfileTop profile={profile} />
-            <ProfileAbout profile={profile} />
+            {/* <ProfileAbout profile={profile} />
             <div className='profile-exp bg-white p-2'>
               <h2 className='text-primary'>Experience</h2>
               {profile.experience.length > 0 ? (
@@ -76,8 +76,8 @@ const Profile = (props: Props) => {
 
             {profile.githubusername && (
               <ProfileGithub username={profile.githubusername} />
-            )}
-          </div> */}
+            )} */}
+          </div>
         </Fragment>
       )}
     </Fragment>
