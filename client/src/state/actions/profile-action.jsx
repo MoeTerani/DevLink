@@ -41,11 +41,13 @@ export const getAllProfilesActions = () => async (dispatch) => {
 
 // GET a profile by user ID
 export const getProfileByIdAction = (userId) => async (dispatch) => {
-  dispatch({ type: CLEAR_PROFILE });
   try {
-    const res = await axios.get('api/profile/user/' + userId);
+    const res = await axios.get(`/api/profile/user/${userId}`);
 
-    dispatch({ type: GET_PROFILE, payload: res.data });
+    dispatch({
+      type: GET_PROFILE,
+      payload: res.data,
+    });
   } catch (err) {
     dispatch({
       type: PROFILE_ERROR,
