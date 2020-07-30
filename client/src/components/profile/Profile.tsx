@@ -1,5 +1,8 @@
 import React, { useEffect, Fragment } from 'react';
-import { getProfileByIdAction } from '../../state/actions/profile-action';
+import {
+  getProfileByIdAction,
+  getGithubReposAction,
+} from '../../state/actions/profile-action';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import Spinner from '../layout/Spinner';
@@ -7,6 +10,7 @@ import ProfileTop from './ProfileTop';
 import ProfileAbout from './ProfileAbout';
 import ProfileExperience from './ProfileExperience';
 import ProfileEducation from './ProfileEducation';
+import ProfileGithub from './ProfileGithub';
 
 interface Props {}
 
@@ -14,7 +18,6 @@ const Profile = (props: Props) => {
   const idOBJ = useParams();
   //@ts-ignore
   const id = idOBJ.id;
-  console.log(id);
   const auth = useSelector((state: any) => state.auth);
   const profileState = useSelector((state: any) => state.profile);
   // const { user } = Auth;
@@ -23,7 +26,7 @@ const Profile = (props: Props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getProfileByIdAction(id));
+    dispatch(getGithubReposAction(id));
   }, [dispatch, id]);
 
   return (
@@ -75,12 +78,9 @@ const Profile = (props: Props) => {
                 <h4>No education credentials</h4>
               )}
             </div>
-
-            {/* 
             {profile.githubusername && (
               <ProfileGithub username={profile.githubusername} />
             )}{' '}
-            */}
           </div>
         </Fragment>
       )}
