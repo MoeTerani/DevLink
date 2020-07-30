@@ -36,7 +36,7 @@ const EditProfile = (props: Props) => {
   console.log(profile);
   useEffect(() => {
     dispatch(getCurrentProfileAction());
-  }, []);
+  }, [dispatch]);
   useEffect(() => {
     // dispatch(getCurrentProfileAction());
     /* if (!profile) dispatch(getCurrentProfileAction());

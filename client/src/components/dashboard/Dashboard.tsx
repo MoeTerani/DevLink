@@ -15,14 +15,14 @@ interface Props {}
 const Dashboard = (props: Props) => {
   const Auth = useSelector((state: any) => state.auth);
   const profileState = useSelector((state: any) => state.profile);
-  const { isAuthenticated, user } = Auth;
+  const { user } = Auth;
   const { profile, isLoading } = profileState;
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCurrentProfileAction());
-  }, []);
+  }, [dispatch]);
 
   return isLoading && profile === null ? (
     <Spinner />

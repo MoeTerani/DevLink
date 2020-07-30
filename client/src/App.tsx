@@ -5,7 +5,7 @@ import NavBar from '../src/components/layout/NavBar';
 import Landing from '../src/components/layout/Landing';
 import Login from '../src/components/auth/Login';
 import Register from '../src/components/auth/Register';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Alert from '../src/components/layout/Alert';
 import setAuthToken from './utils/setAuthToken';
 import { loadUser } from '../src/state/actions/auth-action';
@@ -15,6 +15,7 @@ import CreateProfile from './components/profileForms/CreateProfile';
 import EditProfile from './components/profileForms/EditProfile';
 import AddEducation from './components/profileForms/AddEducation';
 import AddExperience from './components/profileForms/AddExperience';
+import Profiles from './components/profiles/Profiles';
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -25,10 +26,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(loadUser());
-    // return () => {
-    //   console.log('APP component unmounted');
-    // };
-  }, []);
+  }, [dispatch]);
   return (
     <Router>
       <div className='App'>
@@ -41,6 +39,7 @@ const App = () => {
           <Switch>
             <Route exact path='/register' component={Register} />
             <Route exact path='/login' component={Login} />
+            <Route exact path='/profiles' component={Profiles} />
             <PrivateRoute exact path='/dashboard' component={Dashboard} />
             <PrivateRoute
               exact

@@ -1,7 +1,6 @@
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
-  Register,
   USER_LOADED,
   AUTH_ERROR,
   LOGIN_SUCCESS,

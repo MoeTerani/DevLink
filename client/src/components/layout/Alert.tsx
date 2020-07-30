@@ -1,7 +1,5 @@
 import React from 'react';
-import { Action } from 'redux';
-import { useDispatch, useSelector } from 'react-redux';
-import { setAlert } from '../../state/actions/alert-action';
+import { useSelector } from 'react-redux';
 
 interface Props {}
 

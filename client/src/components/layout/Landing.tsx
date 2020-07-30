@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 interface Props {}
 
 const Landing = (props: Props) => {
-  const dispatch = useDispatch();
   // while logged in No access to  Landing page
   const isAuthenticated = useSelector(
     (state: any) => state.auth.isAuthenticated

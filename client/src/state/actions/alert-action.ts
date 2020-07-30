@@ -1,6 +1,5 @@
 import { SET_ALERT, REMOVE_ALERT } from '../types';
 import { v4 as uuidv4 } from 'uuid';
-import { time } from 'console';
 
 export const setAlert = (
   msg: string,
