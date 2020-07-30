@@ -6,6 +6,7 @@ import Spinner from '../layout/Spinner';
 import ProfileTop from './ProfileTop';
 import ProfileAbout from './ProfileAbout';
 import ProfileExperience from './ProfileExperience';
+import ProfileEducation from './ProfileEducation';
 
 interface Props {}
 
@@ -59,12 +60,11 @@ const Profile = (props: Props) => {
                 <h4>No experience credentials</h4>
               )}
             </div>
-            {/*
             <div className='profile-edu bg-white p-2'>
               <h2 className='text-primary'>Education</h2>
               {profile.education.length > 0 ? (
                 <Fragment>
-                  {profile.education.map((education) => (
+                  {profile.education.map((education: any) => (
                     <ProfileEducation
                       key={education._id}
                       education={education}
@@ -76,9 +76,11 @@ const Profile = (props: Props) => {
               )}
             </div>
 
+            {/* 
             {profile.githubusername && (
               <ProfileGithub username={profile.githubusername} />
-            )} */}
+            )}{' '}
+            */}
           </div>
         </Fragment>
       )}
