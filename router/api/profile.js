@@ -35,20 +35,18 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var express = __importStar(require("express"));
+exports.__esModule = true;
+var express = require("express");
+var config = require('config');
+var request = require('request');
 var router = express.Router();
 var Auth = require('../../middleware/auth');
 var Profile = require('../../models/Profile');
 var _a = require('express-validator'), body = _a.body, validationResult = _a.validationResult;
 var User = require('../../models/User');
+var Post = require('../../models/Post');
+var axios = require('axios');
+var normalize = require('normalize-url');
 // @route   GET api/profile/me
 // @desc    Get current user profile
 // @access  Private
@@ -60,7 +58,7 @@ router.get('/me', Auth, function (req, res) { return __awaiter(void 0, void 0, v
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, Profile.findOne({
                         //@ts-ignore-start
-                        user: req.user.id,
+                        user: req.user.id
                     }).populate('user', ['name', 'avatar'])];
             case 1:
                 profile = _a.sent();
@@ -98,6 +96,7 @@ router.post('/', [
                 if (!errors.isEmpty()) {
                     return [2 /*return*/, res.status(400).json({ errors: errors.array() })];
                 }
+                console.log(req.body);
                 _a = req.body, company = _a.company, location = _a.location, website = _a.website, bio = _a.bio, skills = _a.skills, status = _a.status, githubusername = _a.githubusername, youtube = _a.youtube, twitter = _a.twitter, instagram = _a.instagram, linkedin = _a.linkedin, facebook = _a.facebook;
                 profileFields = {
                     //@ts-ignore-start
@@ -115,7 +114,7 @@ router.post('/', [
                         ? skills
                         : skills.split(',').map(function (skill) { return ' ' + skill.trim(); }),
                     status: status,
-                    githubusername: githubusername,
+                    githubusername: githubusername
                 };
                 socialfields = { youtube: youtube, twitter: twitter, instagram: instagram, linkedin: linkedin, facebook: facebook };
                 profileFields.social = socialfields;
@@ -128,7 +127,7 @@ router.post('/', [
                 if (!profile) return [3 /*break*/, 4];
                 return [4 /*yield*/, Profile.findOneAndUpdate(
                     //@ts-ignore-start
-                    { user: req.user.id }, { $set: profileFields }, { new: true })];
+                    { user: req.user.id }, { $set: profileFields }, { "new": true })];
             case 3:
                 //update
                 profile = _b.sent();
@@ -151,7 +150,7 @@ router.post('/', [
     });
 }); });
 // @route   GET api/profile
-// @desc    GET all user profiles
+// @desc    GET all  profiles
 // @access  Public
 router.get('/', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var profile, error_3;
@@ -188,7 +187,7 @@ router.get('/user/:id', function (req, res) { return __awaiter(void 0, void 0, v
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, Profile.findOne({
-                        user: req.params.id,
+                        user: req.params.id
                     }).populate('user', ['name', 'avatar'])];
             case 1:
                 profile = _a.sent();
@@ -216,37 +215,42 @@ router.get('/user/:id', function (req, res) { return __awaiter(void 0, void 0, v
 // @route   DELETE api/profile
 // @desc    DELETE profile , user and posts
 // @access  Private
-router.delete('/', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+router["delete"]('/', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var err_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 3, , 4]);
-                // todo: remove user s pots
+                _a.trys.push([0, 4, , 5]);
+                // Remove user posts
+                //@ts-ignore
+                return [4 /*yield*/, Post.deleteMany({ user: req.user.id })];
+            case 1:
+                // Remove user posts
+                //@ts-ignore
+                _a.sent();
                 // remove profile
                 return [4 /*yield*/, Profile.findOneAndRemove({
                         //@ts-ignore-start
-                        user: req.user.id,
+                        user: req.user.id
                     })];
-            case 1:
-                // todo: remove user s pots
+            case 2:
                 // remove profile
                 _a.sent();
                 //remove user
                 return [4 /*yield*/, User.findOneAndRemove({
                         //@ts-ignore-start
-                        _id: req.user.id,
+                        _id: req.user.id
                     })];
-            case 2:
+            case 3:
                 //remove user
                 _a.sent();
                 res.json('User successfully removed');
-                return [3 /*break*/, 4];
-            case 3:
+                return [3 /*break*/, 5];
+            case 4:
                 err_2 = _a.sent();
                 res.status(500).send('Server Error' + err_2.message);
-                return [3 /*break*/, 4];
-            case 4: return [2 /*return*/];
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); });
@@ -277,7 +281,7 @@ router.put('/experience', [
                     from: from,
                     to: to,
                     current: current,
-                    description: description,
+                    description: description
                 };
                 _b.label = 1;
             case 1:
@@ -303,7 +307,7 @@ router.put('/experience', [
 // @route   DELETE api/profile/experience
 // @desc    DELETE  experience of a profile
 // @access  Private
-router.delete('/experience/:id', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+router["delete"]('/experience/:id', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var profile, id_1, error_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -362,7 +366,7 @@ router.put('/education', [
                     from: from,
                     to: to,
                     current: current,
-                    description: description,
+                    description: description
                 };
                 _b.label = 1;
             case 1:
@@ -388,7 +392,7 @@ router.put('/education', [
 // @route   DELETE api/profile/education
 // @desc    DELETE  education of a profile
 // @access  Private
-router.delete('/education/:id', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+router["delete"]('/education/:id', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var profile, id_2, error_7;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -409,6 +413,32 @@ router.delete('/education/:id', Auth, function (req, res) { return __awaiter(voi
                 res.status(500).send('Server Error' + error_7.message);
                 return [3 /*break*/, 4];
             case 4: return [2 /*return*/];
+        }
+    });
+}); });
+// @route    GET api/profile/github/:username
+// @desc     Get user repos from Github
+// @access   Public
+router.get('/github/:username', function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var uri, headers, gitHubResponse, err_3;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                uri = encodeURI("https://api.github.com/users/" + req.params.username + "/repos?per_page=5&sort=created:asc");
+                headers = {
+                    'user-agent': 'node.js',
+                    Authorization: "token " + config.get('githubToken')
+                };
+                return [4 /*yield*/, axios.get(uri, { headers: headers })];
+            case 1:
+                gitHubResponse = _a.sent();
+                return [2 /*return*/, res.json(gitHubResponse.data)];
+            case 2:
+                err_3 = _a.sent();
+                console.error(err_3.message);
+                return [2 /*return*/, res.status(404).json({ msg: 'No Github profile found' })];
+            case 3: return [2 /*return*/];
         }
     });
 }); });

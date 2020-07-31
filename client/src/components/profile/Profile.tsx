@@ -1,8 +1,5 @@
 import React, { useEffect, Fragment } from 'react';
-import {
-  getProfileByIdAction,
-  getGithubReposAction,
-} from '../../state/actions/profile-action';
+import { getProfileByIdAction } from '../../state/actions/profile-action';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams, Link } from 'react-router-dom';
 import Spinner from '../layout/Spinner';
@@ -26,7 +23,7 @@ const Profile = (props: Props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getGithubReposAction(id));
+    dispatch(getProfileByIdAction(id));
   }, [dispatch, id]);
 
   return (

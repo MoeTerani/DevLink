@@ -8,7 +8,6 @@ interface Props {}
 const ProfileGithub = ({ username }: any) => {
   const repos = useSelector((state: any) => state.profile.repos);
   const dispatch = useDispatch();
-  console.log(username);
 
   useEffect(() => {
     dispatch(getGithubReposAction(username));

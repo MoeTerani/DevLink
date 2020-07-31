@@ -20,6 +20,7 @@
     "bcryptjs": "^2.4.3",
     "client": "0.0.1",
     "config": "^3.3.1",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "express-validator": "^6.6.0",
     "gravatar": "^1.8.1",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "concurrently": "^5.2.0",
+    "debug": "^4.1.1",
     "nodemon": "^2.0.4"
   }
 }

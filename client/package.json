@@ -48,6 +48,7 @@
   "proxy": "http://localhost:5000",
   "devDependencies": {
     "@types/react-redux": "^7.1.9",
-    "@types/uuid": "^8.0.0"
+    "@types/uuid": "^8.0.0",
+    "debug": "^4.1.1"
   }
 }

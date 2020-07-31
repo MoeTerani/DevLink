@@ -1,5 +1,6 @@
 import * as express from 'express';
 const config = require('config');
+const request = require('request');
 
 const router = express.Router();
 const Auth = require('../../middleware/auth');
@@ -364,7 +365,6 @@ router.delete(
 // @access   Public
 router.get('/github/:username', async (req, res) => {
   try {
-    console.log('inside: GET api/profile/github/:username ');
     const uri = encodeURI(
       `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc`
     );
