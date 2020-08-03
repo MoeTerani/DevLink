@@ -35,15 +35,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var express = __importStar(require("express"));
+exports.__esModule = true;
+var express = require("express");
 var router = express.Router();
 var Auth = require('../../middleware/auth');
 var _a = require('express-validator'), body = _a.body, validationResult = _a.validationResult;
@@ -74,7 +67,7 @@ router.post('/', [Auth, [body('text', 'text is required').not().isEmpty()]], fun
                     name: user.name,
                     avatar: user.avatar,
                     //@ts-ignore-start
-                    user: req.user.id,
+                    user: req.user.id
                 });
                 return [4 /*yield*/, newPost.save()];
             case 3:
@@ -99,7 +92,7 @@ router.get('/me', Auth, function (req, res) { return __awaiter(void 0, void 0, v
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, Post.find({ user: req.user.id }).sort({
-                        date: -1,
+                        date: -1
                     })];
             case 1:
                 post = _a.sent();
@@ -161,7 +154,7 @@ router.get('/', Auth, function (req, res) { return __awaiter(void 0, void 0, voi
             case 0:
                 _a.trys.push([0, 2, , 3]);
                 return [4 /*yield*/, Post.find().sort({
-                        date: -1,
+                        date: -1
                     })];
             case 1:
                 post = _a.sent();
@@ -184,7 +177,7 @@ router.get('/', Auth, function (req, res) { return __awaiter(void 0, void 0, voi
 // @route   DELETE api/posts/:id
 // @desc    DELETE a  post by id
 // @access  Private
-router.delete('/:id', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+router["delete"]('/:id', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var post, error_5;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -298,7 +291,7 @@ router.post('/comment/:id', [Auth, [body('text', 'text is required').not().isEmp
                     name: user.name,
                     avatar: user.avatar,
                     //@ts-ignore-start
-                    user: req.user.id,
+                    user: req.user.id
                 });
                 post.comments.push(newComment);
                 return [4 /*yield*/, post.save()];
@@ -308,7 +301,6 @@ router.post('/comment/:id', [Auth, [body('text', 'text is required').not().isEmp
                 return [3 /*break*/, 6];
             case 5:
                 error_7 = _a.sent();
-                console.log(error_7);
                 res.status(500).send('Server Error ' + error_7);
                 return [3 /*break*/, 6];
             case 6: return [2 /*return*/];
@@ -318,7 +310,7 @@ router.post('/comment/:id', [Auth, [body('text', 'text is required').not().isEmp
 // @route   DELETE api/posts/comment/:user_id/:comment_id
 // @desc    DELETE a  comment on a post  by id
 // @access  Private
-router.delete('/comment/:post_id/:comment_id', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+router["delete"]('/comment/:post_id/:comment_id', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var post, comment, error_8;
     return __generator(this, function (_a) {
         switch (_a.label) {

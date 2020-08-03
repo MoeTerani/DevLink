@@ -52,7 +52,7 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         posts: state.posts.map((post) =>
-          post._id === payload.id ? { ...post, likes: payload.likes } : post
+          post._id === payload.postID ? { ...post, likes: payload.likes } : post
         ),
         isLoading: false,
       };
