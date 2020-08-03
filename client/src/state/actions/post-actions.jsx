@@ -37,3 +37,19 @@ export const addLikeToPostAction = (postID) => async (dispatch) => {
     });
   }
 };
+
+// DELETE A POST
+export const deletePostAction = (postID) => async (dispatch) => {
+  try {
+    const res = await axios.delete(`/api/posts/${postID}`);
+    dispatch({
+      type: DELETE_POST,
+      payload: postID,
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};

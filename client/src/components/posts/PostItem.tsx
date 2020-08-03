@@ -2,7 +2,10 @@ import React, { Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
-import { addLikeToPostAction } from '../../state/actions/post-actions';
+import {
+  addLikeToPostAction,
+  deletePostAction,
+} from '../../state/actions/post-actions';
 
 interface Props {
   post: any;
@@ -37,13 +40,6 @@ const PostItem = (props: Props) => {
             <i className='fas fa-thumbs-up' />{' '}
             <span>{likes.length > 0 && <span>{likes.length}</span>}</span>
           </button>
-          {/* <button
-            onClick={() => dispatch(addLikeToPostAction(_id))}
-            type='button'
-            className='btn btn-light'
-          >
-            <i className='fas fa-thumbs-down' />
-          </button> */}
           <Link to={`/posts/${_id}`} className='btn btn-primary'>
             Discussion{' '}
             {comments.length > 0 && (
@@ -52,7 +48,7 @@ const PostItem = (props: Props) => {
           </Link>
           {!auth.isLoading && user === auth.user._id && (
             <button
-              //   onClick={() => deletePost(_id)}
+              onClick={() => dispatch(deletePostAction(_id))}
               type='button'
               className='btn btn-danger'
             >
