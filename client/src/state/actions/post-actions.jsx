@@ -5,6 +5,7 @@ import {
   DELETE_POST,
   UPDATE_POST,
 } from '../../state/types';
+import axios from 'axios';
 
 export const getPostsAction = () => async (dispatch) => {
   try {
