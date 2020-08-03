@@ -33,7 +33,7 @@ export default (state = initialState, { type, payload }) => {
     case ADD_POST:
       return {
         ...state,
-        posts: [...state.posts, payload],
+        posts: [payload, ...state.posts],
         isLoading: false,
       };
     case DELETE_POST:
