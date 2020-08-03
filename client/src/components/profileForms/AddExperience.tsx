@@ -28,7 +28,6 @@ const AddExperience = (props: Props) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(formData);
     dispatch(addExperienceAction(formData, history));
   };
   return (

@@ -33,7 +33,6 @@ router.post(
     body('password', 'A 6 character Password is required').exists(),
   ],
   async (req: express.Request, res: express.Response) => {
-    // console.log(req.body);
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });

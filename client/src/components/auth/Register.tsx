@@ -29,7 +29,6 @@ const Register = (props: Props) => {
     e.preventDefault();
     if (password !== password2) {
       dispatch(setAlert('Passwords do not match', 'danger'));
-      // console.log('Passwords do not match');
     } else {
       dispatch(registerAction({ name, email, password }));
     }

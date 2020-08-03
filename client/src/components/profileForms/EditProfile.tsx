@@ -33,7 +33,6 @@ const EditProfile = (props: Props) => {
 
   const profileState = useSelector((state: any) => state.profile);
   const { profile, isLoading } = profileState;
-  console.log(profile);
   useEffect(() => {
     dispatch(getCurrentProfileAction());
   }, [dispatch]);
@@ -91,7 +90,6 @@ const EditProfile = (props: Props) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(formData);
     dispatch(createProfile(formData, history, true));
   };
 

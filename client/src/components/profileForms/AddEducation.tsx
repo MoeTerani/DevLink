@@ -36,7 +36,6 @@ const AddEducation = (props: Props) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(formData);
     dispatch(addEducationAction(formData, history));
   };
 
