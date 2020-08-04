@@ -1,27 +1,31 @@
-"use strict";
-exports.__esModule = true;
-var express = require('express');
-var connectDB = require('./config/db');
-var path = require('path');
-var cors = require('cors');
-var app = express();
-//Connect DB
+const express = require('express');
+const connectDB = require('./config/db');
+const path = require('path');
+
+const app = express();
+
+// Connect Database
 connectDB();
-app.use(cors());
-// initialize Middleware
+
+// Init Middleware
 app.use(express.json({ extended: false }));
-// Routes
-app.use('/api/users', require('./router/api/users'));
-app.use('/api/auth', require('./router/api/auth'));
-app.use('/api/profile', require('./router/api/profile'));
-app.use('/api/posts', require('./router/api/posts'));
+
+// Define Routes
+app.use('/api/users', require('./routes/api/users'));
+app.use('/api/auth', require('./routes/api/auth'));
+app.use('/api/profile', require('./routes/api/profile'));
+app.use('/api/posts', require('./routes/api/posts'));
+
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
-    // Set static folder
-    app.use(express.static('client/build'));
-    app.get('*', function (req, res) {
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-    });
+  // Set static folder
+  app.use(express.static('client/build'));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
 }
-var port = process.env.PORT || 5000;
-app.listen(port, function () { return console.log('Server is running on port ' + port); });
+
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
