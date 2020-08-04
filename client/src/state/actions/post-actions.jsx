@@ -44,7 +44,7 @@ export const addLikeToPostAction = (postID) => async (dispatch) => {
 // DELETE A POST
 export const deletePostAction = (postID) => async (dispatch) => {
   try {
-    const res = await axios.delete(`/api/posts/${postID}`);
+    await axios.delete(`/api/posts/${postID}`);
     dispatch({
       type: DELETE_POST,
       payload: postID,
@@ -123,7 +123,7 @@ export const addCommentToPostAction = (postID, formData) => async (
 // DELETE A COMMENT BY ID
 export const deleteCommentAction = (postID, commentID) => async (dispatch) => {
   try {
-    const res = await axios.delete(`/api/posts/comment/${postID}/${commentID}`);
+    await axios.delete(`/api/posts/comment/${postID}/${commentID}`);
 
     dispatch({
       type: DELETE_COMMENT,
