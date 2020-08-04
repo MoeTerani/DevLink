@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var express = require('express');
 var connectDB = require('./config/db');
 var path = require('path');
@@ -10,7 +10,6 @@ connectDB();
 app.use(cors());
 // initialize Middleware
 app.use(express.json({ extended: false }));
-app.get('/', function (req, res) { return res.send('API running '); });
 // Routes
 app.use('/api/users', require('./router/api/users'));
 app.use('/api/auth', require('./router/api/auth'));
