@@ -12,10 +12,7 @@ app.use(cors());
 // initialize Middleware
 app.use(express.json({ extended: false }));
 
-app.get('/', (req: any, res: any) => res.send('API running '));
-
 // Routes
-
 app.use('/api/users', require('./router/api/users'));
 app.use('/api/auth', require('./router/api/auth'));
 app.use('/api/profile', require('./router/api/profile'));
