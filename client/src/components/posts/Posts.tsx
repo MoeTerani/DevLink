@@ -27,7 +27,7 @@ const Posts = (props: Props) => {
       <PostForm />
       <div className='posts'>
         {posts.map((post: any) => (
-          <PostItem key={post._id} post={post} />
+          <PostItem key={post._id} post={post} showButtons={true} />
         ))}
       </div>
     </Fragment>

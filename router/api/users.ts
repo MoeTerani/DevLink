@@ -36,11 +36,12 @@ router.post(
           .json({ errors: [{ msg: 'User already exist' }] });
       }
       // Get user's Gravatar
-      const avatar = gravatar.url({
-        s: '200',
-        r: 'pg',
-        d: 'mm',
-      });
+      // const avatar = gravatar.url({
+      //   s: '200',
+      //   r: 'pg',
+      //   d: 'mm',
+      // });
+      const avatar = `https://www.avatarapi.com/js.aspx?email=${email}&size=128`;
 
       // Hash the password with bcrypt
       user = new User({

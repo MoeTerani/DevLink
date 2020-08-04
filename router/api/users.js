@@ -35,15 +35,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var express = __importStar(require("express"));
+exports.__esModule = true;
+var express = require("express");
 var User = require('../../models/User');
 var _a = require('express-validator'), body = _a.body, validationResult = _a.validationResult;
 var gravatar = require('gravatar');
@@ -80,17 +73,13 @@ router.post('/', [
                             .status(400)
                             .json({ errors: [{ msg: 'User already exist' }] })];
                 }
-                avatar = gravatar.url({
-                    s: '200',
-                    r: 'pg',
-                    d: 'mm',
-                });
+                avatar = "https://www.avatarapi.com/js.aspx?email=" + email + "&size=128";
                 // Hash the password with bcrypt
                 user = new User({
                     name: name,
                     email: email,
                     password: password,
-                    avatar: avatar,
+                    avatar: avatar
                 });
                 return [4 /*yield*/, bcrypt.genSalt(10)];
             case 3:
@@ -105,13 +94,13 @@ router.post('/', [
                 // return a promise
                 _d.sent();
                 payload = {
-                    //the id id the _id from db and is back with the promise user.save()
+                    //the id is the _id from db and is back with the promise user.save()
                     user: {
-                        id: user.id,
-                    },
+                        id: user.id
+                    }
                 };
                 jwt.sign(payload, config.get('jwtSecret'), {
-                    expiresIn: '5h',
+                    expiresIn: '5h'
                 }, function (err, token) {
                     if (err)
                         throw err;

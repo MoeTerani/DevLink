@@ -74,3 +74,21 @@ export const addPostAction = (formData) => async (dispatch) => {
     });
   }
 };
+
+// GET A POST BY ID
+// DELETE A POST
+export const getPostByIdAction = (postID) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/api/posts/${postID}`);
+
+    dispatch({
+      type: GET_POST,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: POST_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
