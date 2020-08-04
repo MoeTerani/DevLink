@@ -21,10 +21,11 @@ app.use('/api/posts', require('./router/api/posts'));
 // Serve static assets in production
 if (process.env.NODE_ENV === 'production') {
   // Set static folder
-  app.use(express.static('client/build'));
+  // Serve static files from the React app
+  app.use(express.static(path.join(__dirname, 'client/build')));
 
   app.get('*', (req: any, res: any) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    res.sendFile(path.join(__dirname + '/client/build/index.html'));
   });
 }
 
