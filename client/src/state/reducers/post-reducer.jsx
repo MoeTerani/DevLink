@@ -6,7 +6,7 @@ import {
   ADD_POST,
   GET_POST,
   ADD_COMMENT,
-  REMOVE_COMMENT,
+  DELETE_COMMENT,
 } from '../../state/types.ts';
 
 const initialState = {
@@ -62,7 +62,7 @@ export default (state = initialState, { type, payload }) => {
         post: { ...state.post, comments: payload },
         isLoading: false,
       };
-    case REMOVE_COMMENT:
+    case DELETE_COMMENT:
       return {
         ...state,
         post: {
