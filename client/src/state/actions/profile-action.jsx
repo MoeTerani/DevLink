@@ -86,7 +86,7 @@ export const createProfile = (formData, history, edit = false) => async (
     const resGit = await axios.get(
       `/api/profile/github/${formData.githubusername}`
     );
-    const avatarUrl = resGit.data[0].owner.avatar_url;
+    const avatarUrl = resGit.data[0]?.owner.avatar_url;
     const config2 = {
       headers: { 'Content-Type': 'application/json' },
     };
@@ -97,7 +97,7 @@ export const createProfile = (formData, history, edit = false) => async (
     dispatch({ type: GET_PROFILE, payload: res.data });
     dispatch(setAlert(edit ? 'Profile updated' : 'Profile Created', 'success'));
 
-    history.goBack(); // we cannot use >Redirect /> in actions , we need the history object
+    history.goBack(); // we cannot use <Redirect /> in actions , we need the history object
   } catch (err) {
     const errors = err.response.data.errors;
 

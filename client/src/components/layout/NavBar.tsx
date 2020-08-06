@@ -52,7 +52,7 @@ const NavBar = (props: Props) => {
     <nav className='navbar bg-dark'>
       <h1>
         <Link to='/'>
-          <i className='fas fa-code' /> DevConnector
+          <i className='fas fa-code' /> DevLink
         </Link>
       </h1>
       {/*  !isLoading ? (do stuff) : NULL   =    !isLoading && (Do stuff( have a ternary )) */}
