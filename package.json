@@ -5,9 +5,9 @@
   "engines": {
     "node": "12.18.0"
   },
-  "main": "server.js",
+  "main": "server.ts",
   "scripts": {
-    "start": "node server",
+    "start": "ts-node server.ts",
     "server": "nodemon server",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
@@ -30,6 +30,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.25",
     "normalize-url": "^5.0.0",
+    "ts-node": "^8.10.2",
     "typescript": "^3.9.7"
   },
   "devDependencies": {

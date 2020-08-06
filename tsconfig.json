@@ -1,6 +1,12 @@
 {
-  "include": ["*/"],
-  "exclude": ["client/**/*"],
+  "include": [
+    "*/",
+    "router/**/*.ts",
+    "models/**/*.ts",
+    "middleware/**/*.ts",
+    "config/**/*.ts"
+  ],
+  "exclude": ["client/**/*", "node_modules"],
 
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig.json to read more about this file */
