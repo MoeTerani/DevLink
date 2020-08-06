@@ -44,6 +44,7 @@ var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 var config = require('config');
 var router = express.Router();
+var Auth = require('../../middleware/auth');
 // @route   POST api/users/
 // @desc    Test route
 // @access  public
@@ -114,6 +115,47 @@ router.post('/', [
                 });
                 return [3 /*break*/, 7];
             case 7: return [2 /*return*/];
+        }
+    });
+}); });
+// @route   GET api/users/avatar/:avatar
+// @desc    UPDATE AVATAR
+// @access  PRIVATE
+router.post('/avatar', Auth, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var avatarUrl, error_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                avatarUrl = req.body.avatar;
+                console.log(avatarUrl);
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                // //@ts-ignore-start
+                // let user = await User.findOne({ user: req.user.id });
+                //@ts-ignore-end
+                console.log(req.user.id);
+                // if (user) {
+                //   //update
+                return [4 /*yield*/, User.findOneAndUpdate(
+                    //@ts-ignore-start
+                    { _id: req.user.id }, { avatar: avatarUrl }, { "new": true })];
+            case 2:
+                // if (user) {
+                //   //update
+                _a.sent();
+                //@ts-ignore-end
+                // return res.json(user);
+                res.send('update avatar');
+                return [3 /*break*/, 4];
+            case 3:
+                error_1 = _a.sent();
+                // // Create a profile
+                // profile = new Profile(profileFields);
+                // await profile.save();
+                res.status(500).send('Server Error' + error_1.message);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); });

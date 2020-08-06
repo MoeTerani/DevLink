@@ -82,6 +82,17 @@ export const createProfile = (formData, history, edit = false) => async (
     };
 
     const res = await axios.post('api/profile', formData, config);
+    // UPDATE PROFILE AVATAR
+    const resGit = await axios.get(
+      `/api/profile/github/${formData.githubusername}`
+    );
+    const avatarUrl = resGit.data[0].owner.avatar_url;
+    const config2 = {
+      headers: { 'Content-Type': 'application/json' },
+    };
+    const data = { avatar: avatarUrl };
+
+    await axios.post('/api/users/avatar', data, config2);
 
     dispatch({ type: GET_PROFILE, payload: res.data });
     dispatch(setAlert(edit ? 'Profile updated' : 'Profile Created', 'success'));

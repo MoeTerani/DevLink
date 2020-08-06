@@ -7,6 +7,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const router = express.Router();
+const Auth = require('../../middleware/auth');
 
 // @route   POST api/users/
 // @desc    Test route
@@ -82,6 +83,46 @@ router.post(
       (err: Error) => {
         res.status(500).json('Server Error' + err);
       };
+    }
+  }
+);
+
+// @route   GET api/users/avatar/:avatar
+// @desc    UPDATE AVATAR
+// @access  PRIVATE
+
+router.post(
+  '/avatar',
+
+  Auth,
+
+  async (req: express.Request, res: express.Response) => {
+    const avatarUrl = req.body.avatar;
+
+    console.log(avatarUrl);
+
+    try {
+      // //@ts-ignore-start
+      // let user = await User.findOne({ user: req.user.id });
+      //@ts-ignore-end
+      console.log(req.user.id);
+      // if (user) {
+      //   //update
+      await User.findOneAndUpdate(
+        //@ts-ignore-start
+        { _id: req.user.id },
+        { avatar: avatarUrl },
+        { new: true }
+      );
+      //@ts-ignore-end
+      // return res.json(user);
+      res.send('update avatar');
+    } catch (error) {
+      // // Create a profile
+      // profile = new Profile(profileFields);
+
+      // await profile.save();
+      res.status(500).send('Server Error' + error.message);
     }
   }
 );
