@@ -8,7 +8,7 @@ const ProfileEducation = ({ education }: any) => {
   const { school, degree, fieldofstudy, to, from, description } = education;
   return (
     <div>
-      <h3 className='text-dark'>{school}</h3>
+      <h3 className=''>{school}</h3>
       <p>
         <Moment format='YYYY/MM/DD'>{moment.utc(from)}</Moment> -{' '}
         {!to ? ' Now' : <Moment format='YYYY/MM/DD'>{moment.utc(to)}</Moment>}

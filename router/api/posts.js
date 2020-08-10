@@ -319,12 +319,6 @@ router["delete"]('/comment/:post_id/:comment_id', Auth, function (req, res) { re
                 return [4 /*yield*/, Post.findById(req.params.post_id)];
             case 1:
                 post = _a.sent();
-                //check if the user is the owner of the post before deleting it.
-                //@ts-ignore-start
-                if (post.user.toString() !== req.user.id) {
-                    //@ts-ignore-end
-                    return [2 /*return*/, res.status(401).json({ msg: 'User not authorized' })];
-                }
                 return [4 /*yield*/, post.comments.find(function (comment) { return comment.id === req.params.comment_id; })];
             case 2:
                 comment = _a.sent();

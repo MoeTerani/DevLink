@@ -14,6 +14,20 @@ const NavBar = (props: Props) => {
   const authLinks = (
     <ul>
       <li>
+        <label className='switch'>
+          <i className='fas fa-adjust' />
+          <div>
+            <input
+              onChange={() => {
+                document.body.classList.toggle('light-theme');
+              }}
+              type='checkbox'
+            />
+            <span className='slider round'></span>
+          </div>
+        </label>
+      </li>
+      <li>
         <Link to='/profiles'>Developers</Link>
       </li>
       <li>
@@ -36,6 +50,20 @@ const NavBar = (props: Props) => {
 
   const guestLinks = (
     <ul>
+      <li>
+        <label className='switch'>
+          <i className='fas fa-adjust' />
+          <div>
+            <input
+              onChange={() => {
+                document.body.classList.toggle('light-theme');
+              }}
+              type='checkbox'
+            />
+            <span className='slider round'></span>
+          </div>
+        </label>
+      </li>
       <li>
         <Link to='/profiles'>Developers</Link>
       </li>

@@ -8,7 +8,7 @@ const ProfileExperience = ({ experience }: any) => {
   const { company, title, location, to, from, description } = experience;
   return (
     <div>
-      <h3 className='text-dark'>{company}</h3>
+      <h3 className=''>{company}</h3>
       <p>
         <Moment format='YYYY/MM/DD'>{moment.utc(from)}</Moment> -{' '}
         {!to ? ' Now' : <Moment format='YYYY/MM/DD'>{moment.utc(to)}</Moment>}

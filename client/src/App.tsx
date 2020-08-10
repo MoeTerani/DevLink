@@ -32,7 +32,7 @@ const App = () => {
   }, [dispatch]);
   return (
     <Router>
-      <div className='App'>
+      <div className='App '>
         <NavBar />
         <Route exact path='/'>
           <Landing />

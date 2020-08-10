@@ -8,10 +8,13 @@ interface Props {}
 
 const CommentItem = ({ comment, postId }: { comment: any; postId: string }) => {
   const { _id, text, name, avatar, user, date } = comment;
+  console.log({ comment });
   const dispatch = useDispatch();
   const auth = useSelector((state: any) => state.auth);
+  console.log({ auth });
+  console.log({ postId });
   return (
-    <div className='post bg-white p-1 my-1'>
+    <div className='post bg-light p-1 my-1'>
       <div>
         <Link to={`/profile/${user}`}>
           <img className='round-img' src={avatar} alt='' />
@@ -23,7 +26,7 @@ const CommentItem = ({ comment, postId }: { comment: any; postId: string }) => {
         <p className='post-date'>
           Posted on <Moment format='YYYY/MM/DD'>{date}</Moment>
         </p>
-        {!auth.loading && user === auth.user._id && (
+        {!auth.isLoading && user === auth.user._id && (
           <button
             onClick={() => dispatch(deleteCommentAction(postId, _id))}
             type='button'

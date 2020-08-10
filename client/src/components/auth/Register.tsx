@@ -68,8 +68,8 @@ const Register = (props: Props) => {
             onChange={updateValue}
           />
           <small className='form-text'>
-            This site uses Gravatar so if you want a profile image, use a
-            Gravatar email
+            This site uses Github's avatar so if you want a profile image, add
+            your github username to your profile.
           </small>
         </div>
         <div className='form-group'>

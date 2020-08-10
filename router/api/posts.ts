@@ -241,11 +241,11 @@ router.delete(
       const post = await Post.findById(req.params.post_id);
       //check if the user is the owner of the post before deleting it.
 
-      //@ts-ignore-start
-      if (post.user.toString() !== req.user.id) {
-        //@ts-ignore-end
-        return res.status(401).json({ msg: 'User not authorized' });
-      }
+      // //@ts-ignore-start
+      // if (post.user.toString() !== req.user.id) {
+      //   //@ts-ignore-end
+      //   return res.status(401).json({ msg: 'User not authorized' });
+      // }
 
       const comment = await post.comments.find(
         (comment: any) => comment.id === req.params.comment_id
