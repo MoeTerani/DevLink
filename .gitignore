@@ -6,6 +6,7 @@ config/production.json
 config/default.json
 /.pnp
 .pnp.js
+.pnp.test.js
 
 # testing
 /coverage
